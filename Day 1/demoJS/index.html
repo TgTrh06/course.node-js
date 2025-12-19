@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <meta:charset="UTF-8">
+        <title>Day 1</title>
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <h1>Welcome to Day 1</h1>
+        <p class="text-content">This is the content for Day 1.</p>
+        
+        <input type="text" placeholder="Type something here"> 
+        <button id="submitBtn">Submit</button>
+        
+        <script>
+            document.getElementById("submitBtn").onclick = function() {
+                const userInput = document.querySelector("input").value;
+                alert("You entered: " + userInput);
+            };
+        </script>
+        <script src="js/my.js"></script>
+    </body>
+</html>

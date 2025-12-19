@@ -1,0 +1,36 @@
+/* 
+    styles.css 
+    Styles for Day 1 demoJS
+    id > class > element
+*/
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: rgb(222, 252, 222);
+}
+
+input {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.text-alert {
+    color: red;
+    font-weight: bold;
+}
+
+.text-content {
+    color: purple;
+    font-size: 18px;
+}
+
+#submitBtn {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
