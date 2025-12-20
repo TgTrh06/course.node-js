@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Component</title>
+    <link rel="stylesheet" href="css/hw.css">
+</head>
+
+<body>
+
+    <div class="profile-box">
+        <h3>Profile</h3>
+
+        <!-- USERNAME -->
+        <div class="field">
+            <label>Username</label>
+            <input type="text" id="username" value="admin123">
+            <button class="change-btn" id="btnUsername">CHANGE</button>
+        </div>
+
+        <!-- EMAIL -->
+        <div class="field">
+            <label>Email</label>
+            <input type="email" id="email" value="admin@gmail.com">
+            <button class="change-btn" id="btnEmail">CHANGE</button>
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="field">
+            <label>Password</label>
+            <input type="password" id="password" value="123456" placeholder="Nhập mật khẩu mới">
+
+            <div id="confirmPassBox" style="display:none; margin-top:10px;">
+                <label>Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Nhập lại mật khẩu">
+                <div id="passError" class="error"></div>
+            </div>
+
+            <button class="change-btn" id="btnPassword">CHANGE</button>
+        </div>
+
+        <div id="message"></div>
+    </div>
+
+    <!-- CONFIRM POPUP -->
+    <div class="overlay" id="overlay">
+        <div class="confirm-box">
+            <p id="confirmText"></p>
+            <button id="confirmYes">Xác nhận</button>
+            <button id="confirmNo">Hủy</button>
+        </div>
+    </div>
+
+    <script>
+        // STATE
+        const state = {
+            username: document.getElementById("username").value,
+            email: document.getElementById("email").value,
+            action: null
+        };
+
+        // ELEMENTS
+        const usernameInput = document.getElementById("username");
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const confirmPasswordInput = document.getElementById("confirmPassword");
+
+        const btnUsername = document.getElementById("btnUsername");
+        const btnEmail = document.getElementById("btnEmail");
+        const btnPassword = document.getElementById("btnPassword");
+
+        const confirmPassBox = document.getElementById("confirmPassBox");
+        const passError = document.getElementById("passError");
+
+        const overlay = document.getElementById("overlay");
+        const confirmText = document.getElementById("confirmText");
+        const message = document.getElementById("message");
+
+        // USERNAME INPUT CHANGE
+        usernameInput.addEventListener("input", () => {
+            btnUsername.style.display =
+                usernameInput.value !== state.username ? "block" : "none";
+        });
+
+        // EMAIL INPUT CHANGE
+        emailInput.addEventListener("input", () => {
+            btnEmail.style.display =
+                emailInput.value !== state.email ? "block" : "none";
+        });
+
+        // PASSWORD INPUT CHANGE
+        function checkPassword() {
+            const pass = passwordInput.value;
+            const confirm = confirmPasswordInput.value;
+
+            if (pass.length === 0) {
+                confirmPassBox.style.display = "none";
+                btnPassword.style.display = "none";
+                confirmPasswordInput.value = "";
+                passError.textContent = "";
+                return;
+            }
+
+            confirmPassBox.style.display = "block";
+
+            if (confirm.length === 0) {
+                btnPassword.style.display = "none";
+                passError.textContent = "";
+                return;
+            }
+
+            if (pass !== confirm) {
+                passError.textContent = "Mật khẩu không khớp";
+                btnPassword.style.display = "none";
+                return;
+            }
+
+            if (pass.length < 6) {
+                passError.textContent = "Mật khẩu phải ít nhất 6 ký tự";
+                btnPassword.style.display = "none";
+                return;
+            }
+
+            passError.textContent = "";
+            btnPassword.style.display = "block";
+        }
+
+        passwordInput.addEventListener("input", checkPassword);
+        confirmPasswordInput.addEventListener("input", checkPassword);
+
+        // OPEN COFIRM POPUP
+        btnUsername.onclick = () => openConfirm("username", "đổi username");
+        btnEmail.onclick = () => openConfirm("email", "đổi email");
+        btnPassword.onclick = () => openConfirm("password", "đổi mật khẩu");
+
+        function openConfirm(action, text) {
+            state.action = action;
+            confirmText.textContent = `Bạn có chắc muốn ${text}?`;
+            overlay.style.display = "block";
+        }
+
+        // CONFIRM YES CLICK
+        document.getElementById("confirmYes").onclick = () => {
+            if (state.action === "username") {
+                state.username = usernameInput.value;
+                btnUsername.style.display = "none";
+            }
+
+            if (state.action === "email") {
+                state.email = emailInput.value;
+                btnEmail.style.display = "none";
+            }
+
+            if (state.action === "password") {
+                passwordInput.value = "";
+                confirmPasswordInput.value = "";
+                confirmPassBox.style.display = "none";
+                btnPassword.style.display = "none";
+            }
+
+            message.textContent = "Cập nhật thành công!";
+            overlay.style.display = "none";
+            state.action = null;
+        };
+
+        // CONFIRM NO CLICK
+        document.getElementById("confirmNo").onclick = () => {
+            overlay.style.display = "none";
+            state.action = null;
+        };
+    </script>
+</body>
+
+</html>
