@@ -29,7 +29,7 @@
         <!-- PASSWORD -->
         <div class="field">
             <label>Password</label>
-            <input type="password" id="password" value="123456" placeholder="Nhập mật khẩu mới">
+            <input type="password" id="password" value="" placeholder="Nhập mật khẩu mới">
 
             <div id="confirmPassBox" style="display:none; margin-top:10px;">
                 <label>Confirm Password</label>
@@ -43,21 +43,11 @@
         <div id="message"></div>
     </div>
 
-    <!-- CONFIRM POPUP -->
-    <div class="overlay" id="overlay">
-        <div class="confirm-box">
-            <p id="confirmText"></p>
-            <button id="confirmYes">Xác nhận</button>
-            <button id="confirmNo">Hủy</button>
-        </div>
-    </div>
-
     <script>
         // STATE
         const state = {
             username: document.getElementById("username").value,
             email: document.getElementById("email").value,
-            action: null
         };
 
         // ELEMENTS
@@ -73,21 +63,29 @@
         const confirmPassBox = document.getElementById("confirmPassBox");
         const passError = document.getElementById("passError");
 
-        const overlay = document.getElementById("overlay");
-        const confirmText = document.getElementById("confirmText");
-        const message = document.getElementById("message");
-
         // USERNAME INPUT CHANGE
         usernameInput.addEventListener("input", () => {
             btnUsername.style.display =
                 usernameInput.value !== state.username ? "block" : "none";
         });
 
+        btnUsername.onclick = () => {
+            state.username = usernameInput.value;
+            btnUsername.style.display = "none";
+            message.textContent = "Username đã được cập nhật!";
+        };
+
         // EMAIL INPUT CHANGE
         emailInput.addEventListener("input", () => {
             btnEmail.style.display =
                 emailInput.value !== state.email ? "block" : "none";
         });
+
+        btnEmail.onclick = () => {
+            state.email = emailInput.value;
+            btnEmail.style.display = "none";
+            message.textContent = "Email đã được cập nhật!";
+        };
 
         // PASSWORD INPUT CHANGE
         function checkPassword() {
@@ -129,45 +127,13 @@
         passwordInput.addEventListener("input", checkPassword);
         confirmPasswordInput.addEventListener("input", checkPassword);
 
-        // OPEN COFIRM POPUP
-        btnUsername.onclick = () => openConfirm("username", "đổi username");
-        btnEmail.onclick = () => openConfirm("email", "đổi email");
-        btnPassword.onclick = () => openConfirm("password", "đổi mật khẩu");
-
-        function openConfirm(action, text) {
-            state.action = action;
-            confirmText.textContent = `Bạn có chắc muốn ${text}?`;
-            overlay.style.display = "block";
-        }
-
-        // CONFIRM YES CLICK
-        document.getElementById("confirmYes").onclick = () => {
-            if (state.action === "username") {
-                state.username = usernameInput.value;
-                btnUsername.style.display = "none";
-            }
-
-            if (state.action === "email") {
-                state.email = emailInput.value;
-                btnEmail.style.display = "none";
-            }
-
-            if (state.action === "password") {
-                passwordInput.value = "";
-                confirmPasswordInput.value = "";
-                confirmPassBox.style.display = "none";
-                btnPassword.style.display = "none";
-            }
-
-            message.textContent = "Cập nhật thành công!";
-            overlay.style.display = "none";
-            state.action = null;
-        };
-
-        // CONFIRM NO CLICK
-        document.getElementById("confirmNo").onclick = () => {
-            overlay.style.display = "none";
-            state.action = null;
+        btnPassword.onclick = () => {
+            passwordInput.value = "";
+            confirmPasswordInput.value = "";
+            confirmPassBox.style.display = "none";
+            btnPassword.style.display = "none";
+            passError.textContent = "";
+            message.textContent = "Mật khẩu đã được cập nhật!";
         };
     </script>
 </body>
